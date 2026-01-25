@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Creeper Realm</title>
 
+<!-- SITE ICON -->
+<link rel="icon" type="image/png" href="icon.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -16,7 +19,6 @@
   --muted:#9fd6ba;
 }
 
-/* RESET */
 *{
   margin:0;
   padding:0;
@@ -29,7 +31,6 @@
   user-select:none;
 }
 
-/* BODY */
 body{
   height:100vh;
   background:radial-gradient(circle at top, #0e3a27, #050c08 65%);
@@ -37,7 +38,7 @@ body{
   color:var(--text);
 }
 
-/* ================= INTRO ================= */
+/* INTRO */
 #intro{
   position:fixed;
   inset:0;
@@ -70,14 +71,14 @@ body{
   to{opacity:0;visibility:hidden}
 }
 
-/* ================= RAIN ================= */
+/* RAIN */
 canvas{
   position:absolute;
   inset:0;
   z-index:0;
 }
 
-/* ================= MUSIC ================= */
+/* MUSIC */
 .mute{
   position:fixed;
   top:22px;
@@ -92,7 +93,7 @@ canvas{
   backdrop-filter:blur(6px);
 }
 
-/* ================= CARD ================= */
+/* CARD */
 .card{
   position:absolute;
   inset:0;
@@ -128,7 +129,6 @@ canvas{
   filter:drop-shadow(0 0 26px rgba(61,255,159,.85));
 }
 
-/* TEXT */
 h1{
   margin-top:26px;
   font-size:36px;
@@ -139,7 +139,7 @@ h1{
   color:var(--muted);
 }
 
-/* ================= CODE ================= */
+/* CODE */
 .code-box{
   margin-top:32px;
   padding:18px 22px;
@@ -171,7 +171,7 @@ h1{
 }
 .toast.show{opacity:1}
 
-/* ================= BUTTONS ================= */
+/* BUTTONS */
 .buttons{
   margin-top:36px;
   display:flex;
@@ -185,35 +185,26 @@ h1{
   border:none;
   cursor:pointer;
   font-size:14px;
-
   display:flex;
   align-items:center;
   justify-content:center;
   gap:10px;
-
   transform-style:preserve-3d;
-  transition:
-    transform .25s cubic-bezier(.22,1,.36,1),
-    box-shadow .25s ease;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease;
 }
 
 .btn img{
   width:18px;
   height:18px;
-  display:block;
 }
 
-/* Hover (Desktop only) */
 .btn.discord:hover{
   transform:translateY(-4px) rotateX(4deg) rotateY(-6deg) scale(1.05);
-  box-shadow:0 16px 40px rgba(0,0,0,.45);
 }
 .btn.support:hover{
   transform:translateY(-4px) rotateX(4deg) rotateY(6deg) scale(1.05);
-  box-shadow:0 16px 40px rgba(0,0,0,.45);
 }
 
-/* Discord icon fix + tilt */
 .discord-icon{
   transform:rotateY(180deg);
   transition:transform .35s cubic-bezier(.22,1,.36,1);
@@ -236,7 +227,7 @@ a{text-decoration:none}
   letter-spacing:1px;
 }
 
-/* ================= EASTER CREEPER ================= */
+/* EASTER CREEPER */
 .easter-creeper{
   position:fixed;
   bottom:-80px;
@@ -253,54 +244,26 @@ a{text-decoration:none}
   transform:rotate(-8deg) translate(40px,-40px);
 }
 
-/* ================= MOBILE VERSION ================= */
+/* MOBILE */
 @media (max-width:768px){
-  .inner{
-    width:92%;
-    padding:42px 28px;
-    border-radius:26px;
-  }
-  .logo{width:96px}
+  .inner{width:92%;padding:42px 28px}
   h1{font-size:28px}
-  .sub{font-size:12px}
-  .buttons{gap:12px}
-  .btn{padding:14px;font-size:13px}
-  .btn:hover,
-  .btn.discord:hover,
-  .btn.support:hover{
-    transform:none;
-    box-shadow:none;
-  }
-  .btn.discord:hover .discord-icon{
-    transform:rotateY(180deg);
-  }
-  .card-tilt{transform:none!important}
-  canvas{opacity:.35}
-  .mute{
-    top:14px;
-    right:14px;
-    padding:8px 10px;
-  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- INTRO -->
 <div id="intro" class="no-select">
   <img src="creeper.png">
   <p>ENTERING CREEPER REALM</p>
 </div>
 
-<!-- MUSIC -->
 <audio id="music" src="music.mp3" loop></audio>
 <div class="mute" onclick="toggleMusic()">🔊</div>
 
-<!-- RAIN -->
 <canvas id="rain"></canvas>
 
-<!-- CARD -->
 <div class="card">
   <div class="card-tilt" id="cardTilt">
     <div class="inner no-select">
@@ -325,9 +288,8 @@ a{text-decoration:none}
         </a>
       </div>
 
-      <!-- COPYRIGHT -->
       <div class="copyright">
-        © Copyright izx_
+        © Copyright izx_ & thmtgi
       </div>
 
     </div>
@@ -374,7 +336,7 @@ document.addEventListener("mousemove",e=>{
 tilt.style.transform=`translate(${(e.clientX/innerWidth-.5)*6}px,${(e.clientY/innerHeight-.5)*6}px)`
 });
 
-/* EASTER EGG */
+/* EASTER */
 let b="";
 document.addEventListener("keydown",e=>{
 b=(b+e.key.toLowerCase()).slice(-7);
