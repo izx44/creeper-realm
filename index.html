@@ -5,80 +5,79 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Creeper Realm</title>
 
-<!-- SITE ICON -->
 <link rel="icon" type="image/png" href="icon.png">
-
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#050c08;
   --green:#3dff9f;
-  --green-soft:#1fa866;
+  --red:#ff5f6d;
   --text:#eafff4;
   --muted:#9fd6ba;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Orbitron', sans-serif;
-}
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
+.no-select,*{user-select:none}
 
-.no-select,
-.no-select *{
-  user-select:none;
-}
-
+/* ================= BODY + SMOOTH BACKGROUND ================= */
 body{
   height:100vh;
-  background:radial-gradient(circle at top, #0e3a27, #050c08 65%);
   overflow:hidden;
   color:var(--text);
+  background:
+    radial-gradient(circle at top,#0e3a27,#050c08 65%);
+  position:relative;
 }
 
-/* INTRO */
-#intro{
+/* RED OVERLAY */
+body::before{
+  content:"";
   position:fixed;
   inset:0;
-  background:#020705;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
+  background:
+    radial-gradient(circle at top,#3a0e1c,#120608 70%);
+  opacity:0;
+  transition:opacity 2.5s ease-in-out;
+  z-index:-1;
+}
+body.supporters::before{opacity:1}
+
+/* ================= INTRO ================= */
+#intro{
+  position:fixed;inset:0;background:#020705;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
   z-index:9999;
   animation:introOut 1s ease forwards;
-  animation-delay:3.6s;
+  animation-delay:3.6s
 }
 #intro img{
   width:130px;
   filter:drop-shadow(0 0 40px var(--green));
-  animation:introLogo 3.6s ease forwards;
+  animation:introLogo 3.6s
 }
 #intro p{
   margin-top:22px;
   letter-spacing:4px;
   font-size:13px;
-  color:var(--muted);
+  color:var(--muted)
 }
 @keyframes introLogo{
   0%{opacity:0;transform:scale(.6)}
   60%{opacity:1;transform:scale(1.05)}
-  100%{transform:scale(1)}
 }
 @keyframes introOut{
   to{opacity:0;visibility:hidden}
 }
 
-/* RAIN */
+/* ================= CANVAS ================= */
 canvas{
   position:absolute;
   inset:0;
   z-index:0;
 }
 
-/* MUSIC */
+/* ================= MUSIC ================= */
 .mute{
   position:fixed;
   top:22px;
@@ -89,26 +88,31 @@ canvas{
   padding:10px 12px;
   border-radius:14px;
   cursor:pointer;
-  z-index:10;
-  backdrop-filter:blur(6px);
+  z-index:10
 }
 
-/* CARD */
+/* ================= CARD ================= */
 .card{
   position:absolute;
   inset:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:5;
+  z-index:5
 }
 
-.card-tilt{
-  transition:transform .15s ease;
-}
+.card-wrapper{perspective:1200px}
+.card-parallax{transition:transform .15s ease}
 
-.inner{
+.card-flip{
+  position:relative;
   width:420px;
+  transform-style:preserve-3d;
+  transition:transform 1.2s cubic-bezier(.22,1,.36,1)
+}
+.card-flip.flipped{transform:rotateY(180deg)}
+
+.card-face{
   padding:58px 64px;
   background:linear-gradient(
     180deg,
@@ -121,23 +125,47 @@ canvas{
   box-shadow:
     0 50px 140px rgba(0,0,0,.75),
     inset 0 0 0 1px rgba(61,255,159,.22);
+  backface-visibility:hidden;
+
+  transition: background 2.5s ease-in-out; /* ← الإضافة الوحيدة */
 }
 
-/* LOGO */
+body.supporters .card-face{
+  background:linear-gradient(
+    180deg,
+    rgba(80,20,35,.78),
+    rgba(28,8,14,.68)
+  );
+}
+
+.card-back{
+  position:absolute;
+  inset:0;
+  transform:rotateY(180deg)
+}
+
+/* FLIP ARROW */
+.flip-arrow{
+  position:absolute;
+  top:22px;
+  right:22px;
+  font-size:26px;
+  cursor:pointer;
+  transition:.4s
+}
+body:not(.supporters) .flip-arrow{color:var(--green)}
+body.supporters .flip-arrow{color:var(--red)}
+.flip-arrow:hover{
+  transform:rotate(180deg) scale(1.15)
+}
+
+/* LOGO & TEXT */
 .logo{
   width:120px;
-  filter:drop-shadow(0 0 26px rgba(61,255,159,.85));
+  filter:drop-shadow(0 0 26px rgba(61,255,159,.85))
 }
-
-h1{
-  margin-top:26px;
-  font-size:36px;
-}
-.sub{
-  margin-top:8px;
-  font-size:13px;
-  color:var(--muted);
-}
+h1{margin-top:26px;font-size:36px}
+.sub{margin-top:8px;font-size:13px;color:var(--muted)}
 
 /* CODE */
 .code-box{
@@ -149,25 +177,21 @@ h1{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  cursor:pointer;
+  cursor:pointer
 }
-.code{
-  color:var(--green);
-  letter-spacing:2px;
-  font-size:15px;
-}
+.code{color:var(--green);letter-spacing:2px;font-size:15px}
 .copy-icon{
   width:26px;
   padding:4px;
   border-radius:8px;
-  background:rgba(61,255,159,.15);
+  background:rgba(61,255,159,.15)
 }
 .toast{
   margin-top:10px;
   font-size:12px;
-  color:var(--green-soft);
+  color:var(--green);
   opacity:0;
-  transition:.3s;
+  transition:.3s
 }
 .toast.show{opacity:1}
 
@@ -175,9 +199,8 @@ h1{
 .buttons{
   margin-top:36px;
   display:flex;
-  gap:16px;
+  gap:16px
 }
-
 .btn{
   flex:1;
   padding:15px;
@@ -189,45 +212,56 @@ h1{
   align-items:center;
   justify-content:center;
   gap:10px;
-  transform-style:preserve-3d;
-  transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease;
+  transition:transform .25s cubic-bezier(.22,1,.36,1)
 }
-
-.btn img{
-  width:18px;
-  height:18px;
-}
-
 .btn.discord:hover{
-  transform:translateY(-4px) rotateX(4deg) rotateY(-6deg) scale(1.05);
+  transform:translateY(-4px) rotateX(4deg) rotateY(-6deg) scale(1.05)
 }
 .btn.support:hover{
-  transform:translateY(-4px) rotateX(4deg) rotateY(6deg) scale(1.05);
+  transform:translateY(-4px) rotateX(4deg) rotateY(6deg) scale(1.05)
 }
-
-.discord-icon{
-  transform:rotateY(180deg);
-  transition:transform .35s cubic-bezier(.22,1,.36,1);
-}
-.btn.discord:hover .discord-icon{
-  transform:rotateY(180deg) rotate(-12deg) scale(1.1);
-}
-
 .support{background:#ff5f6d;color:#fff}
 .discord{background:#5865f2;color:#fff}
 
-a{text-decoration:none}
+.discord-icon{
+  width:18px;
+  transform:rotateY(180deg);
+  transition:transform .35s cubic-bezier(.22,1,.36,1)
+}
+.btn.discord:hover .discord-icon{
+  transform:rotateY(180deg) rotate(-12deg) scale(1.1)
+}
 
-/* COPYRIGHT */
 .copyright{
   margin-top:22px;
   font-size:12px;
   color:var(--muted);
-  opacity:.75;
-  letter-spacing:1px;
+  opacity:.75
 }
 
-/* EASTER CREEPER */
+/* ================= HEARTS ================= */
+#hearts{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 1.5s ease;
+  z-index:1
+}
+body.supporters #hearts{opacity:1}
+
+.heart{
+  position:absolute;
+  font-size:38px;
+  color:rgba(255,120,140,.35);
+  animation:fall linear infinite
+}
+@keyframes fall{
+  from{transform:translateY(-10vh)}
+  to{transform:translateY(110vh)}
+}
+
+/* ================= EASTER CREEPER ================= */
 .easter-creeper{
   position:fixed;
   bottom:-80px;
@@ -237,24 +271,18 @@ a{text-decoration:none}
   transform:rotate(-18deg);
   pointer-events:none;
   z-index:6;
-  transition:transform .9s cubic-bezier(.22,1,.36,1),opacity .4s ease;
+  transition:transform .9s cubic-bezier(.22,1,.36,1),opacity .4s
 }
 .easter-creeper.show{
   opacity:1;
-  transform:rotate(-8deg) translate(40px,-40px);
-}
-
-/* MOBILE */
-@media (max-width:768px){
-  .inner{width:92%;padding:42px 28px}
-  h1{font-size:28px}
+  transform:rotate(-8deg) translate(40px,-40px)
 }
 </style>
 </head>
 
 <body>
 
-<div id="intro" class="no-select">
+<div id="intro">
   <img src="creeper.png">
   <p>ENTERING CREEPER REALM</p>
 </div>
@@ -263,35 +291,44 @@ a{text-decoration:none}
 <div class="mute" onclick="toggleMusic()">🔊</div>
 
 <canvas id="rain"></canvas>
+<div id="hearts"></div>
 
 <div class="card">
-  <div class="card-tilt" id="cardTilt">
-    <div class="inner no-select">
+  <div class="card-wrapper">
+    <div class="card-parallax" id="parallax">
+      <div class="card-flip" id="flip">
 
-      <img src="creeper.png" class="logo">
-      <h1>Creeper Realm</h1>
-      <div class="sub">Minecraft Bedrock • Survival Realm</div>
+        <div class="card-face">
+          <div class="flip-arrow" onclick="toggle()">↩</div>
+          <img src="creeper.png" class="logo">
+          <h1>Creeper Realm</h1>
+          <div class="sub">Minecraft Bedrock • Survival Realm</div>
 
-      <div class="code-box" onclick="copyCode()">
-        <div class="code" id="realmCode">###########</div>
-        <img src="copy.png" class="copy-icon">
+          <div class="code-box" onclick="copyCode()">
+            <div class="code" id="realmCode">###########</div>
+            <img src="copy.png" class="copy-icon">
+          </div>
+          <div class="toast" id="toast">✔ تم نسخ كود الريلم</div>
+
+          <div class="buttons">
+            <button class="btn support">❤️ دعم السيرفر</button>
+            <a href="https://discord.gg/wPn4YStG" target="_blank">
+              <button class="btn discord">
+                <img src="discord.png" class="discord-icon"> انضم للسيرفر
+              </button>
+            </a>
+          </div>
+
+          <div class="copyright">© Copyright izx_ & thmtgi</div>
+        </div>
+
+        <div class="card-face card-back">
+          <div class="flip-arrow" onclick="toggle()">↩</div>
+          <h1>الداعمين ❤️</h1>
+          izx-1000$<br>thmtgi-0$<br>space-10$<br>saudksa-30$
+        </div>
+
       </div>
-      <div class="toast" id="toast">✔ تم نسخ كود الريلم</div>
-
-      <div class="buttons">
-        <button class="btn support">❤️ دعم السيرفر</button>
-        <a href="https://discord.gg/wPn4YStG" target="_blank">
-          <button class="btn discord">
-            <img src="discord.png" class="discord-icon">
-            انضم للسيرفر
-          </button>
-        </a>
-      </div>
-
-      <div class="copyright">
-        © Copyright izx_ & thmtgi
-      </div>
-
     </div>
   </div>
 </div>
@@ -301,50 +338,92 @@ a{text-decoration:none}
 <script>
 /* RAIN */
 const c=document.getElementById("rain"),x=c.getContext("2d");
-function r(){c.width=innerWidth;c.height=innerHeight}
-r();addEventListener("resize",r);
-let d=[...Array(140)].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,l:14+Math.random()*16,s:3+Math.random()*3}));
-(function rain(){
-x.clearRect(0,0,c.width,c.height);
-x.strokeStyle="rgba(120,255,200,.14)";
-d.forEach(p=>{x.beginPath();x.moveTo(p.x,p.y);x.lineTo(p.x,p.y+p.l);x.stroke();p.y+=p.s;if(p.y>c.height)p.y=-20});
-requestAnimationFrame(rain)
-})();
+function resize(){c.width=innerWidth;c.height=innerHeight}
+resize();addEventListener("resize",resize);
+
+let drops=[...Array(140)].map(()=>( {
+  x:Math.random()*c.width,
+  y:Math.random()*c.height,
+  l:14+Math.random()*16,
+  s:3+Math.random()*3
+}));
+
+function rain(){
+  x.clearRect(0,0,c.width,c.height);
+  if(!document.body.classList.contains("supporters")){
+    x.strokeStyle="rgba(120,255,200,.14)";
+    drops.forEach(p=>{
+      x.beginPath();
+      x.moveTo(p.x,p.y);
+      x.lineTo(p.x,p.y+p.l);
+      x.stroke();
+      p.y+=p.s;
+      if(p.y>c.height)p.y=-20;
+    });
+  }
+  requestAnimationFrame(rain);
+}
+rain();
+
+/* HEARTS */
+setInterval(()=>{
+  if(!document.body.classList.contains("supporters"))return;
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=14+Math.random()*6+"s";
+  document.getElementById("hearts").appendChild(h);
+  setTimeout(()=>h.remove(),20000);
+},1600);
+
+/* PARALLAX */
+const p=document.getElementById("parallax");
+document.addEventListener("mousemove",e=>{
+  const x=(e.clientX/innerWidth-.5)*8;
+  const y=(e.clientY/innerHeight-.5)*8;
+  p.style.transform=`translate(${x}px,${y}px)`
+});
+
+/* FLIP */
+function toggle(){
+  document.body.classList.toggle("supporters");
+  document.getElementById("flip").classList.toggle("flipped");
+}
+
+/* COPY */
+function copyCode(){
+  navigator.clipboard.writeText(realmCode.innerText);
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),1500);
+}
 
 /* MUSIC */
 const m=document.getElementById("music");
 m.volume=0;let started=false,muted=false;
 document.addEventListener("click",()=>{
-if(!started){started=true;m.play();let v=0;
-let f=setInterval(()=>{if(v<.08){v+=.005;m.volume=v}else clearInterval(f)},120)}},{once:true});
+  if(!started){
+    started=true;m.play();
+    let v=0;
+    let f=setInterval(()=>{if(v<.08){v+=.005;m.volume=v}else clearInterval(f)},120)
+  }
+},{once:true});
 function toggleMusic(){
-muted=!muted;m.muted=muted;
-document.querySelector(".mute").textContent=muted?"🔇":"🔊";
+  muted=!muted;
+  m.muted=muted;
+  document.querySelector(".mute").textContent=muted?"🔇":"🔊";
 }
 
-/* COPY */
-function copyCode(){
-navigator.clipboard.writeText(document.getElementById("realmCode").innerText);
-const t=document.getElementById("toast");
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),1500);
-}
-
-/* PARALLAX */
-const tilt=document.getElementById("cardTilt");
-document.addEventListener("mousemove",e=>{
-tilt.style.transform=`translate(${(e.clientX/innerWidth-.5)*6}px,${(e.clientY/innerHeight-.5)*6}px)`
-});
-
-/* EASTER */
-let b="";
+/* EASTER CREEPER */
+let buffer="";
 document.addEventListener("keydown",e=>{
-b=(b+e.key.toLowerCase()).slice(-7);
-if(b==="creeper"){
-const cr=document.getElementById("easterCreeper");
-cr.classList.add("show");
-setTimeout(()=>cr.classList.remove("show"),2200);
-}});
+  buffer=(buffer+e.key.toLowerCase()).slice(-7);
+  if(buffer==="creeper"){
+    const cr=document.getElementById("easterCreeper");
+    cr.classList.add("show");
+    setTimeout(()=>cr.classList.remove("show"),2200);
+  }
+});
 </script>
 
 </body>
