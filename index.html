@@ -277,6 +277,53 @@ body.supporters #hearts{opacity:1}
   opacity:1;
   transform:rotate(-8deg) translate(40px,-40px)
 }
+
+/* ====== ADDED: تعطيل الفليب + إخفاء زر الدعم بدون حذف أي شيء ====== */
+.flip-arrow{display:none !important;}     /* يخفي سهم الفليب */
+.btn.support{display:none !important;}    /* يخفي زر الدعم */
+
+/* ====== ADDED: توسيط زر الديسكورد بالنص بدون حذف أي شيء ====== */
+.buttons{justify-content:center !important;}
+.buttons a{display:flex !important; flex:1 !important; justify-content:center !important;}
+.buttons a .btn.discord{flex:none !important; width:100% !important; max-width:340px !important;}
+
+/* ====== ADDED: جعل الموقع Responsive للجوال والكمبيوتر بدون حذف/تغيير أي شيء ====== */
+html,body{width:100%;}
+@media (max-width:520px){
+  /* الكرت */
+  .card-flip{width:min(92vw,420px) !important;}
+  .card-face{padding:40px 22px !important; border-radius:26px !important;}
+
+  /* النصوص */
+  h1{font-size:30px !important; margin-top:18px !important;}
+  .sub{font-size:12px !important;}
+
+  /* اللوقو */
+  .logo{width:100px !important;}
+
+  /* صندوق الكود */
+  .code-box{padding:14px 16px !important; border-radius:16px !important;}
+  .code{font-size:13px !important; letter-spacing:1.6px !important;}
+  .copy-icon{width:24px !important;}
+
+  /* الأزرار */
+  .buttons{margin-top:28px !important;}
+  .buttons a .btn.discord{max-width:100% !important;}
+  .btn{padding:14px !important; font-size:13px !important; border-radius:14px !important;}
+
+  /* زر الميوت */
+  .mute{top:14px !important; right:14px !important; padding:9px 11px !important; border-radius:12px !important;}
+
+  /* الانترو */
+  #intro img{width:110px !important;}
+  #intro p{font-size:12px !important; letter-spacing:3px !important;}
+}
+
+@media (max-height:650px){
+  .card-face{padding:40px 34px !important;}
+  h1{font-size:32px !important;}
+  .buttons{margin-top:26px !important;}
+}
 </style>
 </head>
 
@@ -387,8 +434,7 @@ document.addEventListener("mousemove",e=>{
 
 /* FLIP */
 function toggle(){
-  document.body.classList.toggle("supporters");
-  document.getElementById("flip").classList.toggle("flipped");
+  return; /* تعطيل الفليب نهائياً بدون حذف أي شيء */
 }
 
 /* COPY */
@@ -428,4 +474,3 @@ document.addEventListener("keydown",e=>{
 
 </body>
 </html>
-
